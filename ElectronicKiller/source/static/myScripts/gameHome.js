@@ -21,4 +21,17 @@
         posi.empty();
         $('#chatList').append('<div>' + user.username + '已退出房间。</div>');
     }
+    me.GetHouseUsers = function () {
+        var cards = $('.user-card');
+        var result = '';
+        for (var i = 0; i < cards.length; i++) {
+            var card = cards[i];
+            var id = card.getAttribute('id');
+            if (id != null) {
+                result += id + ','
+            }
+        }
+        return result;
+    }
 }
+

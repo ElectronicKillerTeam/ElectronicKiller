@@ -41,9 +41,11 @@
                         <button type="submit"class="btn-blue" id="submitChat">发言</button>
                     </form>
                 </div>
-                <div class="h100 w100 bc">
+                <form class="h100 w100 bc" action="/online" method="post" id="startGameForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="users"/>
                     <button class="btn btn-primary w100">开始游戏</button>
-                </div>
+                </form>
                 
             </div>
         </div>

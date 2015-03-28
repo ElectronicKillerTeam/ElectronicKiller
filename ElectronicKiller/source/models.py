@@ -37,6 +37,14 @@ class UserInfo(models.Model):
             u.CreatedTime = datetime.datetime.now()
             u.id = Guid.New()
             a = User.objects.create_user(username=str(u.id)[-10:] + '@@' + username,password='onlytest')
-            u.AuthUser=a
+            u.AuthUser = a
             u.save()
         return u
+
+
+
+class GameHouse(object):
+    def __init__(self,id):
+        self.id = id
+        self.users = {}
+        pass

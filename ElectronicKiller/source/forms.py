@@ -21,3 +21,4 @@ class UserForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput({
                                    'class': 'form-control login-input col-sm-8',
                                    'placeholder':'请输入姓名或昵称'}))
+

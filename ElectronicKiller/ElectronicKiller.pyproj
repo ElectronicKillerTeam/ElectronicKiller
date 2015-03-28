@@ -38,6 +38,7 @@
     <Compile Include="source\controllers\gaming.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="source\controllers\__init__.py" />
     <Compile Include="source\dwebsocket\decorators.py" />
     <Compile Include="source\dwebsocket\factory.py" />
     <Compile Include="source\dwebsocket\middleware.py" />
@@ -94,8 +95,10 @@
     <Content Include="source\static\content\chat.css" />
     <Content Include="source\static\content\color.css" />
     <Content Include="source\static\content\gameHome.css" />
+    <Content Include="source\static\content\gaming.css" />
     <Content Include="source\static\content\site.css" />
     <Content Include="source\static\content\size.css" />
+    <Content Include="source\static\myScripts\gaming.js" />
     <Content Include="source\static\myScripts\gameHome.js" />
     <Content Include="source\static\myScripts\chat.js" />
     <Content Include="source\static\scripts\jquery-1.10.2.intellisense.js" />
@@ -113,7 +116,9 @@
     <Content Include="source\static\scripts\_references.js" />
     <Content Include="source\templates\gameHome.html" />
     <Content Include="source\templates\chat.html" />
+    <Content Include="source\templates\gaming.html" />
     <Content Include="source\templates\index.html" />
+    <Content Include="source\templates\layouts\base1.html" />
     <Content Include="source\templates\layouts\base.html" />
     <Content Include="source\templates\layouts\layout.html" />
     <Content Include="source\templates\login.html" />
