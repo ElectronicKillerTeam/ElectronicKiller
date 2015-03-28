@@ -75,6 +75,7 @@
     <Folder Include="ElectronicKiller\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ElectronicKiller\WebPage1.html" />
     <Content Include="requirements.txt" />
     <Content Include="source\static\bootstrap-3.3.4-dist\css\bootstrap-theme.css" />
     <Content Include="source\static\bootstrap-3.3.4-dist\css\bootstrap-theme.css.map" />
