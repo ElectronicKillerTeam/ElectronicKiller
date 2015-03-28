@@ -7,6 +7,8 @@
     <InterpreterId>{2af0f10d-7135-4994-9156-5d01c9c11b7e}</InterpreterId>
     <InterpreterVersion>2.7</InterpreterVersion>
     <WebBrowserPort>10911</WebBrowserPort>
+    <WebBrowserUrl>
+    </WebBrowserUrl>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -33,6 +35,9 @@
     <Compile Include="ElectronicKiller\customer_config.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="source\controllers\gaming.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="source\dwebsocket\decorators.py" />
     <Compile Include="source\dwebsocket\factory.py" />
     <Compile Include="source\dwebsocket\middleware.py" />
@@ -56,6 +61,7 @@
   <ItemGroup>
     <Folder Include="source\" />
     <Folder Include="source\dwebsocket\" />
+    <Folder Include="source\controllers\" />
     <Folder Include="source\static\" />
     <Folder Include="source\static\bootstrap-3.3.4-dist\" />
     <Folder Include="source\static\bootstrap-3.3.4-dist\css\" />
