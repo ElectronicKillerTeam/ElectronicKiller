@@ -54,9 +54,9 @@ function myUnescape(value) {
 //传入卡牌，将卡牌显示在页面自己的位置上
 function ShowCard(cards) {
     var mypanel = $('#mypanel');
-    var content = '<div class="card col-md-1">{0}</div>';
+    var content = '<div class="card col-md-1"><div>{0}</div><div>{1}</div><div class="f14 mt10">{2}</div></div>';
     for (var i = 0; i < cards.length; i++) {
-        mypanel.append($.format(content, cards[i].CardName));
+        mypanel.append($.format(content, cards[i].CardNum,cards[i].CardName,cards[i].Description));
     }
     var count = $('#mypanel .card').length;
     $('#selfusercard .cardcount').text(count);

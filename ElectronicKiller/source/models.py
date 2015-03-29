@@ -68,6 +68,7 @@ class CardInfo(models.Model):
     CreatedTime = models.DateTimeField(auto_now_add=True)
     CardName = models.CharField(max_length=50)
     CardNum = models.IntegerField()
+    Color = models.IntegerField()
     Description = models.CharField(max_length=255,null=True)
 
     @staticmethod
