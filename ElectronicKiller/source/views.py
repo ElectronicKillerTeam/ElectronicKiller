@@ -7,7 +7,7 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 from dwebsocket.decorators import accept_websocket,require_websocket
-from source.models import UserInfo
+from source.models import UserInfo, GameHouse
 import json
 from source.forms import UserForm
 from django.contrib import auth
@@ -18,6 +18,8 @@ from django.contrib.auth.models import User
 clients = {}
 users = {}
 
+gameHouses = {}
+gameHouses[1] = GameHouse(1)
 def parse_users(users):
     result = []
     for key in users:
@@ -37,10 +39,14 @@ def home(request):
                 'title':'聊天室',
                 'sid':request.COOKIES['sessionid'],
                 'year':datetime.now().year,
-                'user_data':parse_users(users)
+                'user_data':parse_users(gameHouses[1].users)
             }))
 
 
+def send_command(command):
+    data = {'type':'command','command':command }
+    for client in clients.values():
+        client.send(json.dumps(data))
 
 def send_info_msg(info,user):
     data = {'type':'info','info':info,'user':{'id':user.id,'username':user.UserName}}
@@ -68,7 +74,6 @@ def unescape(message):
 """
 @accept_websocket
 def chat(request):
-    
     key = request.GET['sid']
     s = Session.objects.get(session_key=key)
     uid = s.get_decoded().get('_auth_user_id')
@@ -76,6 +81,7 @@ def chat(request):
     user = auth_user.userinfo
     #user = request.user.userinfo
     #print user.id
+    house = gameHouses[1]
     try:
         if clients.has_key(user.id):
             data = {'type':'command','command':'close'}
@@ -83,20 +89,26 @@ def chat(request):
             clients[user.id].close()
 
         clients[user.id] = request.websocket
-        users[user.id] = user
+        #将玩家加入房间
+        house.PushUser(user)
+        print len(house.users)
         send_info_msg('login',user)
 
         for message in request.websocket:
+            if message == 'startgame':
+                #开始游戏
+                house.StartGame()
+                send_command('start')
+                break
             print message
             message = unescape(message)
-            print message
-            print escape(message)
             send_message(message,user)
     except:
         pass
     finally:
         clients.pop(user.id)
-        users.pop(user.id)
+        #玩家退出房间
+        house.PopUser(user)
         send_info_msg('exit',user)
         
 def login(request):

@@ -7,6 +7,7 @@ import hashlib
 from source.utils import Guid
 from django.contrib.auth.models import User
 import datetime
+import random
 
 # Create your models here.
 class UserInfo(models.Model):
@@ -37,6 +38,51 @@ class UserInfo(models.Model):
             u.CreatedTime = datetime.datetime.now()
             u.id = Guid.New()
             a = User.objects.create_user(username=str(u.id)[-10:] + '@@' + username,password='onlytest')
-            u.AuthUser=a
+            u.AuthUser = a
             u.save()
         return u
+
+class GameHouse(object):
+    def __init__(self,id):
+        self.id = id
+        self.users = {}
+        self.clients = {}
+        self.isStartGame = False
+        pass
+
+    def StartGame(self):
+        self.isStartGame = True
+
+    def PushUser(self,user):
+        if self.isStartGame:
+            return
+        self.users[user.id] = user
+
+    def PopUser(self,user):
+        if self.isStartGame:
+            return
+        self.users.pop(user.id)
+
+class CardInfo(models.Model):
+    id = models.IntegerField(primary_key=True)
+    CreatedTime = models.DateTimeField(auto_now_add=True)
+    CardName = models.CharField(max_length=50)
+    CardNum = models.IntegerField()
+    Color = models.IntegerField()
+    Description = models.CharField(max_length=255,null=True)
+
+    @staticmethod
+    def GetNewCard():
+        card = CardInfo(id=Guid.New())
+        card.CardNum = random.randint(1,10)
+        card.Color = random.randint(1,4)
+        card.CardName = u'南蛮入侵'
+        card.Description = u'待补充描述'
+        return card
+    
+    def GetJsonCardInfo(self):
+        json_params = ['CardName','CardNum','Color','Description']
+        card = {'id':str(self.id)}
+        for p in json_params:
+            card[p] = getattr(self,p)
+        return card

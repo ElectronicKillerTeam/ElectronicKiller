@@ -5,6 +5,7 @@ Definition of urls for ElectronicKiller.
 from datetime import datetime
 from django.conf.urls import patterns, url
 from source.forms import BootstrapAuthenticationForm
+from source import controllers
 
 # Uncomment the next lines to enable the admin:
 # from django.conf.urls import include
@@ -18,6 +19,11 @@ urlpatterns = patterns('',
     url(r'^echoindex$', 'source.views.echo_index'),
     url(r'^login$','source.views.login'),
     url(r'^getUserList','source.views.get_user_list'),
+    url(r'^online$','source.controllers.gaming.onlinePage'),
+    url(r'^onlinesocket$','source.controllers.gaming.onlineSocket'),
+
+    url(r'^getcards$','source.controllers.gaming.getCards')
+
     
 
     # Uncomment the admin/doc line below to enable admin documentation:

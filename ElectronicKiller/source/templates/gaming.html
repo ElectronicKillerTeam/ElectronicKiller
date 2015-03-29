@@ -1,0 +1,44 @@
+﻿{% extends "layouts/base.html" %}
+
+{% block cssList %}
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'content/gaming.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div style="border:5px solid #0099CC;height:620px;">
+        <div class="row"></div>
+        
+    </div>
+</div>
+    {% for user in users %}
+        <div class="user" id="user{{ forloop.counter }}" name="{{user.id}}">
+            <div class="username">{{user.UserName}}</div>
+            <div class="cardname">曹操</div>
+            <div class="cardcount">0</div>
+        </div>
+    {% endfor %}
+    
+    <div id="mypanel">
+        <div id="selfusercard">
+            <div class="username">{{selfuser.UserName}}</div>
+            <div class="cardname">曹操</div>
+            <div class="cardcount">0</div>
+        </div>
+        <div class="fr mt5 mr20">
+            <div class="btn btn-default" id="getMoreCard">
+                再抽两张
+            </div>
+        </div>
+        <!-- 卡牌样式代码在gaming.js文件中-->
+    </div>
+    <div id="sid" class="hidden">{{sid}}</div>
+    <div id="uid" class="hidden">{{selfuser.id}}</div>
+{% endblock %}
+
+{% block scripts %}
+    {% load staticfiles %}
+    <script src="{% static 'myScripts/gaming.js' %}"></script>
+{% endblock %}

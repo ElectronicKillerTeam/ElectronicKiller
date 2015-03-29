@@ -27,7 +27,7 @@ function getSocket() {
         console.log('WebSocket open');
     };
     socket.onclose = function () {
-
+        console.log('exit');
     }
     socket.onmessage = function (e) {
         data = JSON.parse(myUnescape(e.data))
@@ -37,7 +37,8 @@ function getSocket() {
         } else if (data.type == 'command') {
             if (data.command == 'close') {
                 $('#chatList').append('<div>您已在另一处登陆，本网页已下线。</div>');
-
+            } else if (data.command == 'start') {
+                window.location.href = '/online';
             }
         } else if (data.type == 'info') {
             switch (data.info) {
@@ -71,4 +72,12 @@ $().ready(function () {
             game.EnterHouse(user);
         });
     }
+})
+
+$('#startGameForm').submit(function () {
+    //var form = $('#startGameForm');
+    //var users = game.GetHouseUsers();
+    //$('#startGameForm input[name="users"]').val(users);
+    window.socket.send(escape('startgame'));
+    return false;
 })
