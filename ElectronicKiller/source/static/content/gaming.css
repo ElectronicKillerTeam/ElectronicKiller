@@ -1,4 +1,4 @@
-﻿.mypanel {
+﻿#mypanel {
     background-color: #0099CC;
     height: 160px;
     position: absolute;
@@ -8,23 +8,39 @@
     padding: 5px;
 }
 
+/*卡牌样式*/
 .card {
     width: 110px;
     height: 140px;
-    background-color: #A8DB71;
+    background-color: #44B78B;
     margin: 5px;
     color: white;
     padding: 10px;
-    font-size: 30px;
+    font-size: 20px;
+}
 
+/*玩家自己的身份卡*/
+#selfusercard {
+    width: 110px;
+    height: 140px;
+    float:right;
+    margin-right:10px;
+    margin-top:5px;
+    font-size: 20px;
+    background-color: #FF6600;
+    color:white;
+    border:1px solid white;
+    padding:10px;
 }
 
 .user {
     width: 150px;
     height: 200px;
-    background-color: #A8DB71;
+    background-color: #44B78B;
     color: white;
-    font-size:50px;
+    font-size: 30px;
+    border: 1px solid #0099CC;
+    padding: 10px;
 }
 
 .username {
@@ -47,7 +63,7 @@
 
 #user3 {
     position: absolute;
-    right:210px;
+    right: 210px;
     top: 10px;
 }
 

@@ -74,7 +74,6 @@ def unescape(message):
 """
 @accept_websocket
 def chat(request):
-    
     key = request.GET['sid']
     s = Session.objects.get(session_key=key)
     uid = s.get_decoded().get('_auth_user_id')
@@ -90,15 +89,16 @@ def chat(request):
             clients[user.id].close()
 
         clients[user.id] = request.websocket
-        house.users[user.id] = user
-
-
+        #将玩家加入房间
+        house.PushUser(user)
+        print len(house.users)
         send_info_msg('login',user)
 
         for message in request.websocket:
             if message == 'startgame':
+                #开始游戏
+                house.StartGame()
                 send_command('start')
-                print 'start'
                 break
             print message
             message = unescape(message)
@@ -107,7 +107,8 @@ def chat(request):
         pass
     finally:
         clients.pop(user.id)
-        house.users.pop(user.id)
+        #玩家退出房间
+        house.PopUser(user)
         send_info_msg('exit',user)
         
 def login(request):

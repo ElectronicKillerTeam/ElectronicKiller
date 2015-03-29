@@ -27,7 +27,7 @@ function getSocket() {
         console.log('WebSocket open');
     };
     socket.onclose = function () {
-
+        console.log('exit');
     }
     socket.onmessage = function (e) {
         data = JSON.parse(myUnescape(e.data))

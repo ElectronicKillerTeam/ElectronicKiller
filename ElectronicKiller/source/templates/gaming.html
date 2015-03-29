@@ -13,21 +13,28 @@
         
     </div>
 </div>
-    <div class="user p10" id="user1">
-        <div class="username">闫帅</div>
-        <div class="cardname">曹操</div>
-    </div>
-    <div class="user" id="user2"></div>
-    <div class="user" id="user3"></div>
-    <div class="user" id="user4"></div>
-    <div class="mypanel">
-        <div class="card col-md-1">
-            <div>1</div>
+    {% for user in users %}
+        <div class="user" id="user{{ forloop.counter }}" name="{{user.id}}">
+            <div class="username">{{user.UserName}}</div>
+            <div class="cardname">曹操</div>
+            <div class="cardcount">0</div>
         </div>
-        {% for user in users %}
-            <div class="card col-md-1">user.UserName</div>
-        {% endfor %}
+    {% endfor %}
+    
+    <div id="mypanel">
+        <div id="selfusercard">
+            <div class="username">{{selfuser.UserName}}</div>
+            <div class="cardname">曹操</div>
+            <div class="cardcount">0</div>
+        </div>
+        <div class="fr mt5 mr20">
+            <div class="btn btn-default" id="getMoreCard">
+                再抽两张
+            </div>
+        </div>
     </div>
+    <div id="sid" class="hidden">{{sid}}</div>
+    <div id="uid" class="hidden">{{selfuser.id}}</div>
 {% endblock %}
 
 {% block scripts %}

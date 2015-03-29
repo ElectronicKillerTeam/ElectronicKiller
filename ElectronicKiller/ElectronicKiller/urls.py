@@ -19,8 +19,10 @@ urlpatterns = patterns('',
     url(r'^echoindex$', 'source.views.echo_index'),
     url(r'^login$','source.views.login'),
     url(r'^getUserList','source.views.get_user_list'),
-    url(r'^online','source.controllers.gaming.onlinePage'),
-    url(r'^onlineSocket','source.controllers.gaming.onlineSocket'),
+    url(r'^online$','source.controllers.gaming.onlinePage'),
+    url(r'^onlinesocket$','source.controllers.gaming.onlineSocket'),
+
+    url(r'^getcards$','source.controllers.gaming.getCards')
 
     
 
