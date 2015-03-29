@@ -12,22 +12,26 @@ function getSocket() {
     socket.onmessage = function (e) {
         console.log(e.data);
         data = JSON.parse(myUnescape(e.data))
+
         switch (data.type) {
-            case 'info':
-                if (data.content == 'ready') {
-                    GetMoreCard(4, 0);
-                }
-                break;
-            case 'getcards':
-                SetUserCardCount(data.userid, data.count);
-                break;
+            case 'command': receiveCommandEvent(data.content); break;
+            
+            case 'getcards': SetUserCardCount(data.content.userid, data.content.count); break;
         }
     }
+
+    function receiveCommandEvent(content) {
+        switch (content) {
+            case 'ready': GetMoreCard(4, 0); break;
+        }
+    }
+
     return socket;
 }
 
 
 $().ready(function () {
+    window.uid = $('#uid').text();
     window.socket = getSocket();
     //GetMoreCard(4);
 })
@@ -54,9 +58,13 @@ function myUnescape(value) {
 //传入卡牌，将卡牌显示在页面自己的位置上
 function ShowCard(cards) {
     var mypanel = $('#mypanel');
-    var content = '<div class="card col-md-1"><div>{0}</div><div>{1}</div><div class="f14 mt10">{2}</div></div>';
+    var content = '<div class="card col-md-1" id="{3}"><div>{0}</div><div>{1}</div><div class="f14 mt10">{2}</div></div>';
     for (var i = 0; i < cards.length; i++) {
-        mypanel.append($.format(content, cards[i].CardNum,cards[i].CardName,cards[i].Description));
+        var card_div = $.format(content, cards[i].CardNum, cards[i].CardName, cards[i].Description, cards[i].id);
+        mypanel.append(card_div);
+        $('#' + cards[i].id).click(function () {
+            UseCard(this.id);
+        });
     }
     var count = $('#mypanel .card').length;
     $('#selfusercard .cardcount').text(count);
@@ -107,4 +115,24 @@ function GetMoreCard(count, hasCount) {
 
 function SetUserCardCount(userid, count) {
     $('[name=' + userid + '] .cardcount').text(count);
+}
+
+function UseCard(id) {
+    var card = $('#' + id);
+    card.remove();
+    ShowCard([]);
+    $.ajax({
+        url: '/usecard',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            'cardid': id
+        },
+        success: function (data) {
+            console.log(data);
+        },
+        error: function (e) {
+            alert(e);
+        }
+    });
 }

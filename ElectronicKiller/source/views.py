@@ -7,7 +7,8 @@ from django.http import HttpRequest
 from django.template import RequestContext
 from datetime import datetime
 from dwebsocket.decorators import accept_websocket,require_websocket
-from source.models import UserInfo, GameHouse
+from source.models import UserInfo
+from source.GameModels import GameHouse
 import json
 from source.forms import UserForm
 from django.contrib import auth
@@ -43,20 +44,12 @@ def home(request):
             }))
 
 
-def send_command(command):
-    data = {'type':'command','command':command }
-    for client in clients.values():
-        client.send(json.dumps(data))
-
-def send_info_msg(info,user):
-    data = {'type':'info','info':info,'user':{'id':user.id,'username':user.UserName}}
-    for client in clients.values():
-        client.send(json.dumps(data))
-
-def send_message(message,user):
-    data = {'type':'message','message':message,'user':{'id':user.id,'username':user.UserName}}
-    for client in clients.values():
-        client.send(escape(json.dumps(data)))
+def send_info_msg(info,user,house):
+    content = {}
+    content['info'] = info
+    content['userid'] = user.id
+    content['username'] = user.UserName
+    house.SendToReadyClient('info',content)
 
 def get_user_list(request):
     user_list = parser_users(users)
@@ -84,32 +77,37 @@ def chat(request):
     house = gameHouses[1]
     try:
         if clients.has_key(user.id):
-            data = {'type':'command','command':'close'}
+            data = {'type':'command','content':'close'}
             clients[user.id].send(json.dumps(data))
             clients[user.id].close()
 
         clients[user.id] = request.websocket
+        house.readyClients[user.id] = request.websocket
         #将玩家加入房间
         house.PushUser(user)
         print len(house.users)
-        send_info_msg('login',user)
+        send_info_msg('login',user,house)
 
         for message in request.websocket:
             if message == 'startgame':
                 #开始游戏
                 house.StartGame()
-                send_command('start')
+                house.SendToReadyClient('command','start')
                 break
             print message
             message = unescape(message)
-            send_message(message,user)
+            content = {}
+            content['userid'] = user.id
+            content['username'] = user.UserName
+            content['message'] = message
+            house.SendToReadyClient('message',content)
     except:
         pass
     finally:
         clients.pop(user.id)
         #玩家退出房间
         house.PopUser(user)
-        send_info_msg('exit',user)
+        send_info_msg('exit',user,house)
         
 def login(request):
     assert isinstance(request, HttpRequest)

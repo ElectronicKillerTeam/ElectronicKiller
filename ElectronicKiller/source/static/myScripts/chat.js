@@ -32,19 +32,19 @@ function getSocket() {
     socket.onmessage = function (e) {
         data = JSON.parse(myUnescape(e.data))
         if (data.type == 'message') {
-            $('#chatList').append('<div>' + data.user.username + ':' + data.message + '</div>');
+            $('#chatList').append('<div>' + data.content.username + ':' + data.content.message + '</div>');
             $('#chatInput').val('');
         } else if (data.type == 'command') {
-            if (data.command == 'close') {
+            if (data.content == 'close') {
                 $('#chatList').append('<div>您已在另一处登陆，本网页已下线。</div>');
-            } else if (data.command == 'start') {
+            } else if (data.content == 'start') {
                 window.location.href = '/online';
             }
         } else if (data.type == 'info') {
-            switch (data.info) {
-                case 'login': game.EnterHouse(data.user);
+            switch (data.content.info) {
+                case 'login': game.EnterHouse(data.content.userid, data.content.username);
                     break;
-                case 'exit': game.ExitHouse(data.user);
+                case 'exit': game.ExitHouse(data.content.userid, data.content.username);
                     break;
             }
         }
@@ -69,7 +69,7 @@ $().ready(function () {
     if (user_data != '') {
         var items = $.parseJSON(user_data);
         $.each(items, function (i, user) {
-            game.EnterHouse(user);
+            game.EnterHouse(user.id, user.username);
         });
     }
 })

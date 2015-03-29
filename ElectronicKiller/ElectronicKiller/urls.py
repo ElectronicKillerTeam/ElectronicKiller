@@ -22,7 +22,8 @@ urlpatterns = patterns('',
     url(r'^online$','source.controllers.gaming.onlinePage'),
     url(r'^onlinesocket$','source.controllers.gaming.onlineSocket'),
 
-    url(r'^getcards$','source.controllers.gaming.getCards')
+    url(r'^getcards$','source.controllers.gaming.getCards'),
+    url(r'^usecard','source.controllers.gaming.useCard'),
 
     
 

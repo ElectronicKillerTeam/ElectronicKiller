@@ -46,6 +46,9 @@
     <Compile Include="source\dwebsocket\websocket.py" />
     <Compile Include="source\dwebsocket\__init__.py" />
     <Compile Include="source\forms.py" />
+    <Compile Include="source\GameModels.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="source\models.py" />
     <Compile Include="source\tests.py" />
     <Compile Include="source\utils.py">

@@ -1,1 +1,1 @@
-python manage.py runserver 192.168.169.6:10911
+python manage.py runserver 127.0.0.1:10911

@@ -43,10 +43,13 @@ def getCards(request):
     houseId = 1
     house = gameHouses[houseId]
     user = request.user.userinfo
-    data = {'type':'getcards','count':count + hasCount,'userid':user.id}
-    for key in house.clients:
-        house.clients[key].send(json.dumps(data))
+    house.Send('getcards',{'count':count + hasCount,'userid':user.id})
     return ajaxResponse(cards)
+
+#使用一张卡牌
+def useCard(request):
+    id = request.GET.get('cardid','')
+    return ajaxResponse([])
 
 def _getUserBySession(request):
     key = request.GET['sid']
@@ -64,9 +67,7 @@ def onlineSocket(request):
     print user.id
     house.clients[user.id] = request.websocket
     if len(house.clients) == len(house.users):
-        data = {'type':'info','content':'ready'}
-        for key in house.clients:
-            house.clients[key].send(json.dumps(data))
+        house.Send('command','ready')
     for message in request.websocket:
         print message
         pass

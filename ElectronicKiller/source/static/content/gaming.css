@@ -19,6 +19,10 @@
     font-size: 20px;
 }
 
+.card:hover{
+    margin-top:-20px;
+}
+
 /*玩家自己的身份卡*/
 #selfusercard {
     width: 110px;
@@ -71,4 +75,17 @@
     position: absolute;
     right: 10px;
     top: 210px;
+}
+
+#usedcard {
+    width: 200px;
+    height: 250px;
+    /*background-color: #44B78B;*/
+    margin-left: auto;
+    margin-right:auto;
+    margin-top:20px;
+    color: white;
+    padding: 10px;
+    font-size: 30px;
+    border:1px solid #44B78B;
 }

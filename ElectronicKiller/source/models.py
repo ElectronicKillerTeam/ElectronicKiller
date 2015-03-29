@@ -42,26 +42,6 @@ class UserInfo(models.Model):
             u.save()
         return u
 
-class GameHouse(object):
-    def __init__(self,id):
-        self.id = id
-        self.users = {}
-        self.clients = {}
-        self.isStartGame = False
-        pass
-
-    def StartGame(self):
-        self.isStartGame = True
-
-    def PushUser(self,user):
-        if self.isStartGame:
-            return
-        self.users[user.id] = user
-
-    def PopUser(self,user):
-        if self.isStartGame:
-            return
-        self.users.pop(user.id)
 
 class CardInfo(models.Model):
     id = models.IntegerField(primary_key=True)
