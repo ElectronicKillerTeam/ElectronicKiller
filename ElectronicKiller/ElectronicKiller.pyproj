@@ -35,6 +35,9 @@
     <Compile Include="ElectronicKiller\customer_config.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="source\controllers\decorators.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="source\controllers\gaming.py">
       <SubType>Code</SubType>
     </Compile>

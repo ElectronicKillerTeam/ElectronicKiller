@@ -16,6 +16,7 @@ from django.http.response import HttpResponseRedirect, HttpResponse
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
 from source.utils import GetUserByRequest
+from source.controllers.decorators import ajax
 
 gameHouses = {}
 gameHouses[1] = GameHouse(1)
@@ -41,10 +42,10 @@ def home(request):
                 'user_data':parse_users(gameHouses[1].users)
             }))
 
+@ajax
 def get_user_list(request):
     user_list = parser_users(users)
-    response = HttpResponse(json.dumps(user_list),content_type=u'application/json')
-    return response
+    return user_list
 
 """
 进行聊天的socket通信函数

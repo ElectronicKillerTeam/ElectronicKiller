@@ -53,7 +53,6 @@ class GameHouse(object):
             self.readyClients[key].send(data)
 
 
-
     @staticmethod
     def escape(message):
         return message.encode('unicode_escape')

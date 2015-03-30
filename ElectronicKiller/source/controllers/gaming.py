@@ -9,9 +9,7 @@ from source.models import CardInfo
 import json
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-
-def ajaxResponse(obj):
-    return HttpResponse(json.dumps(obj),content_type=u'application/json')
+from source.controllers.decorators import ajax
 
 def onlinePage(request):
     houseId = 1
@@ -33,6 +31,7 @@ def onlinePage(request):
 """
 本函数演示了如何进行ajax请求
 """
+@ajax
 def getCards(request):
     #todo:整形判断
     count = int(request.GET.get('count',0))
@@ -44,12 +43,13 @@ def getCards(request):
     house = gameHouses[houseId]
     user = request.user.userinfo
     house.Send('getcards',{'count':count + hasCount,'userid':user.id})
-    return ajaxResponse(cards)
+    return cards
 
 #使用一张卡牌
+@ajax
 def useCard(request):
     id = request.GET.get('cardid','')
-    return ajaxResponse([])
+    return []
 
 def _getUserBySession(request):
     key = request.GET['sid']
