@@ -26,11 +26,13 @@ class GameHouse(object):
     """
     向浏览器发送websocket信息
     type:信息类型 command,info,message
-    data:信息内容
+    content:信息内容，如果不填此信息，将以kw可变参数字典为准
     except_userid:如果不为空，则向除userid之外的人发送此信息
     一般传入本玩家的userid
     """
-    def Send(self,type,content,except_userid=None):
+    def Send(self,type,content=None,except_userid=None,**kw):
+        if content == None:
+            content = kw
         data = json.dumps({'type':type,'content':content})
         data = GameHouse.escape(data)
         for key in self.clients:
@@ -39,7 +41,9 @@ class GameHouse(object):
                 continue
             self.clients[key].send(data)
 
-    def SendToReadyClient(self,type,content,except_userid=None):
+    def SendToReadyClient(self,type,content=None,except_userid=None,**kw):
+        if content == None:
+            content = kw
         data = json.dumps({'type':type,'content':content})
         data = GameHouse.escape(data)
         for key in self.readyClients:
@@ -47,6 +51,8 @@ class GameHouse(object):
             if except_userid == key:
                 continue
             self.readyClients[key].send(data)
+
+
 
     @staticmethod
     def escape(message):

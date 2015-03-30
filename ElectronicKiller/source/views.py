@@ -15,9 +15,7 @@ from django.contrib import auth
 from django.http.response import HttpResponseRedirect, HttpResponse
 from django.contrib.sessions.models import Session
 from django.contrib.auth.models import User
-
-clients = {}
-users = {}
+from source.utils import GetUserByRequest
 
 gameHouses = {}
 gameHouses[1] = GameHouse(1)
@@ -43,50 +41,32 @@ def home(request):
                 'user_data':parse_users(gameHouses[1].users)
             }))
 
-
-def send_info_msg(info,user,house):
-    content = {}
-    content['info'] = info
-    content['userid'] = user.id
-    content['username'] = user.UserName
-    house.SendToReadyClient('info',content)
-
 def get_user_list(request):
     user_list = parser_users(users)
     response = HttpResponse(json.dumps(user_list),content_type=u'application/json')
     return response
-
-def escape(message):
-    return message.encode('unicode_escape')
-
-def unescape(message):
-    return message.replace('%u','\u').decode('unicode_escape')
 
 """
 进行聊天的socket通信函数
 """
 @accept_websocket
 def chat(request):
-    key = request.GET['sid']
-    s = Session.objects.get(session_key=key)
-    uid = s.get_decoded().get('_auth_user_id')
-    auth_user = User.objects.get(pk=uid)
-    user = auth_user.userinfo
-    #user = request.user.userinfo
-    #print user.id
+    GetUserByRequest(request)
+    user = request.userinfo
+
     house = gameHouses[1]
     try:
-        if clients.has_key(user.id):
+        if house.readyClients.has_key(user.id):
             data = {'type':'command','content':'close'}
-            clients[user.id].send(json.dumps(data))
-            clients[user.id].close()
+            house.readyClients[user.id].send(json.dumps(data))
+            house.readyClients[user.id].close()
 
-        clients[user.id] = request.websocket
         house.readyClients[user.id] = request.websocket
         #将玩家加入房间
         house.PushUser(user)
         print len(house.users)
-        send_info_msg('login',user,house)
+
+        house.SendToReadyClient('info',info='login',userid=user.id,username=user.UserName)
 
         for message in request.websocket:
             if message == 'startgame':
@@ -94,20 +74,14 @@ def chat(request):
                 house.StartGame()
                 house.SendToReadyClient('command','start')
                 break
-            print message
-            message = unescape(message)
-            content = {}
-            content['userid'] = user.id
-            content['username'] = user.UserName
-            content['message'] = message
-            house.SendToReadyClient('message',content)
+            message = GameHouse.unescape(message)
+            house.SendToReadyClient('message',userid=user.id,username=user.UserName,message=message)
     except:
         pass
     finally:
-        clients.pop(user.id)
         #玩家退出房间
         house.PopUser(user)
-        send_info_msg('exit',user,house)
+        house.SendToReadyClient('info',info='exit',userid=user.id,username=user.UserName)
         
 def login(request):
     assert isinstance(request, HttpRequest)
@@ -129,31 +103,3 @@ def login(request):
                 'form':form,
             }))
 
-
-
-
-"""以下内容用作测试"""
-clientss = []
-
-def echo_index(request):
-    return render(request,
-            'test.html',
-            context_instance = RequestContext(request,
-            {
-                'title':'聊天室',
-                'year':datetime.now().year,
-            }))
-
-@accept_websocket
-def echo(request):
-    if request.is_websocket():
-        try:
-            clientss.append(request.websocket)
-            for message in request.websocket:
-                for client in clientss:
-                    client.send(message)
-        except:
-            pass
-        finally:
-            print 'out'
-            clientss.remove(request.websocket)

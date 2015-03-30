@@ -14,27 +14,29 @@
     height: 140px;
     background-color: #44B78B;
     margin: 5px;
+    margin-top: 0px;
     color: white;
     padding: 10px;
     font-size: 20px;
+    border:2px solid #0099CC;
 }
 
-.card:hover{
-    margin-top:-20px;
-}
+    .card:hover {
+        margin-top: -20px;
+    }
 
 /*玩家自己的身份卡*/
 #selfusercard {
     width: 110px;
     height: 140px;
-    float:right;
-    margin-right:10px;
-    margin-top:5px;
+    float: right;
+    margin-right: 10px;
+    margin-top: 5px;
     font-size: 20px;
     background-color: #FF6600;
-    color:white;
-    border:1px solid white;
-    padding:10px;
+    color: white;
+    border: 1px solid white;
+    padding: 10px;
 }
 
 .user {
@@ -82,10 +84,10 @@
     height: 250px;
     /*background-color: #44B78B;*/
     margin-left: auto;
-    margin-right:auto;
-    margin-top:20px;
+    margin-right: auto;
+    margin-top: 20px;
     color: white;
     padding: 10px;
     font-size: 30px;
-    border:1px solid #44B78B;
+    border: 1px solid #44B78B;
 }
